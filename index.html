@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Правила флуда</title>
+    <style>
+        /* ========== ОСНОВНЫЕ ПЕРЕМЕННЫЕ ========== */
+        :root {
+            --bg: #ffffff;
+            --text: #111111;
+            --text-secondary: #444444;
+            --border: #dddddd;
+            --card-bg: #fafafa;
+            --accent: #000000;
+            --hover-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --radius: 12px;
+            --font-heading: 'Georgia', 'Times New Roman', serif;
+            --font-body: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+        }
+
+        /* ========== СБРОС ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* Лёгкая анимация фона в оттенках серого */
+            background-image: radial-gradient(circle at 20% 30%, #f0f0f0 0%, transparent 25%),
+                              radial-gradient(circle at 80% 70%, #e0e0e0 0%, transparent 20%);
+            background-attachment: fixed;
+            animation: bgShift 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgShift {
+            0% { background-position: 0% 0%, 100% 100%; }
+            100% { background-position: 100% 100%, 0% 0%; }
+        }
+
+        /* ========== ШАПКА ========== */
+        header {
+            text-align: center;
+            padding: 4rem 1rem 2rem;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid var(--border);
+            animation: fadeInDown 1s ease-out both;
+        }
+
+        header h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px;
+            animation: underlinePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes underlinePulse {
+            0%, 100% { width: 40%; opacity: 0.7; }
+            50% { width: 80%; opacity: 1; }
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-top: 1.2rem;
+        }
+
+        /* ========== НАВИГАЦИЯ ========== */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+            padding: 0.6rem 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            animation: fadeInDown 0.8s ease-out 0.3s both;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid transparent;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* ========== КОНТЕЙНЕР КАРТОЧЕК ========== */
+        .container {
+            max-width: 900px;
+            margin: 2rem auto 4rem;
+            padding: 0 1.5rem;
+        }
+
+        .rule-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.8rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            /* Анимация при появлении будет через JS */
+        }
+
+        .rule-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .rule-card:hover {
+            box-shadow: var(--hover-shadow);
+            border-color: #bbb;
+            transform: translateY(-5px);
+        }
+
+        /* Анимированная градиентная рамка при наведении */
+        .rule-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ccc, #888, #ccc);
+            z-index: -1;
+            border-radius: calc(var(--radius) + 2px);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            animation: borderRotate 3s linear infinite;
+            background-size: 300% 300%;
+        }
+
+        .rule-card:hover::before {
+            opacity: 0.4;
+        }
+
+        @keyframes borderRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Номер правила */
+        .rule-number {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ccc;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+            display: inline-block;
+        }
+
+        .rule-card:hover .rule-number {
+            color: var(--accent);
+        }
+
+        .rule-title {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .rule-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.4s ease;
+        }
+
+        .rule-card:hover .rule-title::after {
+            width: 100%;
+        }
+
+        .rule-content {
+            color: var(--text-secondary);
+        }
+
+        .rule-content p {
+            margin-bottom: 0.8rem;
+        }
+
+        .punishment {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.4rem 1rem;
+            background: #f0f0f0;
+            border-left: 4px solid var(--accent);
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 0 8px 8px 0;
+            transition: var(--transition);
+        }
+
+        .rule-card:hover .punishment {
+            background: #e0e0e0;
+        }
+
+        /* ========== АНИМАЦИИ ПОЯВЛЕНИЯ ========== */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== ФУТЕР ========== */
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ========== АДАПТИВНОСТЬ ========== */
+        @media (max-width: 600px) {
+            .rule-card {
+                padding: 1.2rem 1.2rem;
+            }
+            .rule-title {
+                font-size: 1.5rem;
+            }
+            nav {
+                gap: 0.3rem;
+                padding: 0.4rem 0.5rem;
+            }
+            nav a {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ШАПКА -->
+    <header>
+        <h1>Правила флуда</h1>
+        <p>Соблюдайте, чтобы всем было комфортно</p>
+    </header>
+
+    <!-- НАВИГАЦИЯ -->
+    <nav id="navbar">
+        <!-- Ссылки будут добавлены через JS -->
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="container" id="rules-container">
+        <!-- Карточки правил будут добавлены через JS -->
+    </main>
+
+    <!-- ФУТЕР -->
+    <footer>
+        <p>© 2025 · Флуд-сообщество · Будьте вежливы</p>
+    </footer>
+
+    <script>
+        // ========== ДАННЫЕ ПРАВИЛ ==========
+        // (звёзды и лишние разделители проигнорированы, только текст)
+        const rules = [
+            {
+                number: "01",
+                title: "Конфликты",
+                content: `
+                    <p>Любые ссоры, ругань, срач, конфликты и т.д. — запрещены. Разбирательства проводим в личные сообщения, но никак не во флуде. Флуд создан для комфортного общения.</p>
+                    <p>Все участники конфликта (те, кто начал, подхватил, продолжил, влез) получают своё наказание, в зависимости от решения администрации.</p>
+                    <p>Также вызов конфликта фразами «а слабо», «поплачь» и т.д. имеет наказание. Влезать в конфликты не нужно — лучше отмечайте админов или пишите в лички админам.</p>
+                `,
+                punishment: "Кара: пред / мут / варн / удаление"
+            },
+            {
+                number: "02",
+                title: "Оскорбления",
+                content: `
+                    <p>Оскорбления запрещены так же, как и конфликты. Переход на личности, осуждение человека и всего, что с ним связано, — наказуемо.</p>
+                `,
+                punishment: "Кара: пред / мут"
+            },
+            {
+                number: "03",
+                title: "Табу-темы",
+                content: `
+                    <p>Запрещается обсуждение политики, порнографии, шок-контента и т.д. Во флуде участники разного возраста, стрессоустойчивости и нервов. Если не жалеете себя, то пожалейте хотя бы их — мы все люди и все разные.</p>
+                    <p>За это можно отхватить то или иное наказание в зависимости от решения администрации.</p>
+                `,
+                punishment: "Кара: мут / варн / удаление"
+            },
+            {
+                number: "04",
+                title: "Спам",
+                content: `
+                    <p>Запрещено присылать более 3 одинаковых сообщений / gif / стикеров / фотографий — это уже спам. Давайте будем держать флуд в чистоте и не засорять его мусором.</p>
+                `,
+                punishment: "Кара: мут + пред"
+            },
+            {
+                number: "05",
+                title: "Ролевая",
+                content: `
+                    <p>Ролить во флуде запрещено! Только если это пример поста (показать, как пишет человек, сколько, в каком стиле). Посты пишите хотя бы в две строчки, потому что посты типа «сел», «встал», «поел» тяжело продолжить.</p>
+                    <p>Сюжет и т.д. обсуждаем во флуде либо в личках, у солора. Посты с 18+, шок-контентом, жестокими сценами и т.д. обязательно блюрить, с отметкой «T/W».</p>
+                    <p>В ролевой нельзя убивать чужих и своих персонажей, только НПС.</p>
+                `,
+                punishment: "Кара: по решению администрации"
+            },
+            {
+                number: "06",
+                title: "Чистка × Норма",
+                content: `
+                    <p>Чистка будет проводиться в воскресенье, в 16:00 по МСК, время может меняться в зависимости от занятости админов.</p>
+                    <p>Норма: 150 сообщений. Набирать норму в день чистки запрещено (т.е. у вас 10–40 сообщений, и остальное вы набираете в день чистки).</p>
+                `,
+                punishment: "Кара: по решению администрации"
+            },
+            {
+                number: "07",
+                title: "Рест",
+                content: `
+                    <p>Рест можно брать от 2 дней до 3 недель, в зависимости от ситуации. При желании взять рест пишите админам либо прямо во флуде, отмечая администрацию.</p>
+                `,
+                punishment: "—"
+            },
+            {
+                number: "08",
+                title: "Жалобы",
+                content: `
+                    <p>Жаловаться можно на участников и на администрацию, прикладывая веские доказательства (скрины и т.д.). При получении 3 жалоб — вылет.</p>
+                `,
+                punishment: "Кара: вылет"
+            },
+            {
+                number: "09",
+                title: "Роли",
+                content: `
+                    <p>Роли можно бронировать не больше 3 дней. По истечении срока ваша роль отдаётся другому, если найдётся на неё человек.</p>
+                    <p>Можно взять максимум три роли.</p>
+                `,
+                punishment: "—"
+            },
+            {
+                number: "10",
+                title: "Реклама",
+                content: `
+                    <p>Реклама своих флудов, проектов, КФ, ролок, ботов и т.д. запрещена. По договорённости с администрацией можно будет прорекламировать то, что вы хотели.</p>
+                `,
+                punishment: "Кара: по решению администрации"
+            }
+        ];
+
+        // ========== ГЕНЕРАЦИЯ НАВИГАЦИИ ==========
+        const navbar = document.getElementById('navbar');
+        const fragment = document.createDocumentFragment();
+
+        rules.forEach(rule => {
+            const link = document.createElement('a');
+            link.href = `#rule-${rule.number}`;
+            link.textContent = rule.title;
+            fragment.appendChild(link);
+        });
+        navbar.appendChild(fragment);
+
+        // ========== ГЕНЕРАЦИЯ КАРТОЧЕК ==========
+        const container = document.getElementById('rules-container');
+
+        rules.forEach((rule, index) => {
+            const card = document.createElement('article');
+            card.className = 'rule-card';
+            card.id = `rule-${rule.number}`;
+            card.style.transitionDelay = `${index * 0.05}s`; // лёгкая задержка для каскада
+
+            card.innerHTML = `
+                <div class="rule-number">${rule.number}</div>
+                <h2 class="rule-title">${rule.title}</h2>
+                <div class="rule-content">${rule.content}</div>
+                <div class="punishment">${rule.punishment}</div>
+            `;
+
+            container.appendChild(card);
+        });
+
+        // ========== НАБЛЮДАТЕЛЬ ЗА ПОЯВЛЕНИЕМ ==========
+        const cards = document.querySelectorAll('.rule-card');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // После появления можно перестать наблюдать, чтобы не грузить
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        cards.forEach(card => observer.observe(card));
+
+        // ========== ПЛАВНЫЙ СКРОЛЛ ДЛЯ ЯКОРЕЙ ==========
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Небольшое смещение для липкой навигации
+                    window.scrollBy(0, -70);
+                }
+            });
+        });
+    </script>
+</body>
+  </html>

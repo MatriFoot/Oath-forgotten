@@ -3,32 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Правила флуда · Монохром</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>Правила флуда · Готический стиль</title>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-0: #050505;
+            --bg-0: #030303;
             --bg-1: #0a0a0a;
             --bg-2: #111111;
-            --bg-3: #1a1a1a;
-            --card: rgba(20, 20, 20, 0.75);
-            --card-solid: #141414;
-            --border: #2a2a2a;
-            --border-light: #3a3a3a;
-            --text-0: #ffffff;
-            --text-1: #e0e0e0;
-            --text-2: #b0b0b0;
-            --text-3: #808080;
-            --text-4: #555555;
-            --accent: #ffffff;
-            --glow-white: 0 0 20px rgba(255, 255, 255, 0.3);
-            --glow-strong: 0 0 40px rgba(255, 255, 255, 0.5);
-            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.4);
-            --shadow-deep: 0 20px 60px rgba(0, 0, 0, 0.7);
-            --radius: 16px;
-            --radius-sm: 8px;
-            --transition: 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-            --transition-bounce: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            --card-bg: rgba(15, 15, 15, 0.85);
+            --border: #2c2c2c;
+            --border-light: #4a4a4a;
+            --text-0: #f0f0f0;
+            --text-1: #d0d0d0;
+            --text-2: #a0a0a0;
+            --text-3: #707070;
+            --gold: #c9a86c;
+            --glow-gold: 0 0 20px rgba(201, 168, 108, 0.4);
+            --glow-strong: 0 0 40px rgba(201, 168, 108, 0.7);
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.6);
+            --shadow-deep: 0 25px 70px rgba(0, 0, 0, 0.9);
+            --radius: 8px;
+            --radius-lg: 4px;
+            --transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            --transition-bounce: 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         * {
@@ -44,61 +41,58 @@
         body {
             min-height: 100vh;
             background: var(--bg-0);
-            font-family: 'Inter', 'Segoe UI', sans-serif;
+            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
             color: var(--text-0);
             overflow-x: hidden;
             position: relative;
             cursor: default;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            background-image: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
         }
 
-        /* ===== ФОНОВЫЕ СЛОИ ===== */
-        .bg-grid {
+        /* ===== ГЛОБАЛЬНЫЕ ДЕКОРАТИВНЫЕ СЛОИ ===== */
+        .bg-gothic {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 0;
-            pointer-events: none;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 60px 60px;
-            animation: gridShift 20s linear infinite;
-            mask-image: radial-gradient(ellipse at center, black 40%, transparent 100%);
-            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 100%);
-        }
-
-        @keyframes gridShift {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(60px, 60px); }
-        }
-
-        .bg-vignette {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.8) 100%);
-        }
-
-        /* Частицы пыли */
-        .dust-particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
             pointer-events: none;
             overflow: hidden;
         }
 
+        /* Паутина */
+        .web {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.02);
+            transform: scale(1);
+            animation: webPulse 8s ease-in-out infinite alternate;
+        }
+
+        .web-1 { width: 500px; height: 500px; top: -200px; left: -200px; border-color: rgba(255,255,255,0.08); }
+        .web-2 { width: 350px; height: 350px; bottom: -150px; right: -150px; border-color: rgba(255,255,255,0.06); animation-delay: 2s; }
+        .web-3 { width: 250px; height: 250px; top: 40%; left: -100px; border-color: rgba(255,255,255,0.04); animation-delay: 4s; }
+
+        @keyframes webPulse {
+            0% { transform: scale(1); opacity: 0.3; }
+            100% { transform: scale(1.05); opacity: 0.7; }
+        }
+
+        /* Виньетка */
+        .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.95) 90%);
+        }
+
+        /* Пыль */
         .dust {
             position: absolute;
             width: 2px;
@@ -107,124 +101,143 @@
             border-radius: 50%;
             opacity: 0;
             animation: dustFloat linear infinite;
-            box-shadow: 0 0 4px rgba(255,255,255,0.5);
+            box-shadow: 0 0 6px rgba(255,255,255,0.5);
         }
 
         @keyframes dustFloat {
-            0% { 
-                transform: translateY(0) translateX(0); 
-                opacity: 0; 
-            }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.4; }
-            100% { 
-                transform: translateY(-110vh) translateX(100px); 
-                opacity: 0; 
-            }
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-110vh) translateX(60px); opacity: 0; }
         }
 
-        /* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
+        /* Свечи по бокам */
+        .candle {
+            position: fixed;
+            width: 60px;
+            height: 200px;
+            bottom: 0;
+            z-index: 1;
+            pointer-events: none;
+            filter: drop-shadow(0 0 20px rgba(255,200,100,0.3));
+        }
+
+        .candle-left { left: 30px; }
+        .candle-right { right: 30px; transform: scaleX(-1); }
+
+        .candle-body {
+            position: absolute;
+            bottom: 0;
+            width: 20px;
+            height: 150px;
+            background: linear-gradient(90deg, #333, #555, #333);
+            border-radius: 8px 8px 0 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .candle-wick {
+            position: absolute;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 10px;
+            background: #222;
+        }
+
+        .candle-flame {
+            position: absolute;
+            bottom: 160px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 20px;
+            background: radial-gradient(ellipse at bottom, #fff 0%, #ffd700 40%, #ff8c00 70%, transparent 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: flameFlicker 0.15s ease-in-out infinite alternate;
+            filter: blur(1px);
+        }
+
+        @keyframes flameFlicker {
+            0% { transform: translateX(-50%) scaleY(1) scaleX(1); }
+            100% { transform: translateX(-50%) scaleY(1.1) scaleX(0.9); }
+        }
+
+        /* ===== ОСНОВНОЙ КОНТЕНТ ===== */
         .main-wrapper {
             position: relative;
             z-index: 2;
-            max-width: 850px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 5rem 1.5rem 5rem;
+            padding: 5rem 2rem 5rem;
         }
 
         /* Заголовок */
         .hero {
             text-align: center;
-            margin-bottom: 4.5rem;
-            animation: heroEntrance 1.6s ease-out both;
+            margin-bottom: 5rem;
+            animation: heroEntrance 1.8s ease-out both;
         }
 
         @keyframes heroEntrance {
-            0% { 
-                opacity: 0; 
-                transform: translateY(-60px) scale(0.9); 
-                filter: blur(15px);
-            }
-            100% { 
-                opacity: 1; 
-                transform: translateY(0) scale(1); 
-                filter: blur(0);
-            }
+            0% { opacity: 0; transform: translateY(-50px) scale(0.9); filter: blur(10px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
         .hero h1 {
-            font-size: clamp(3.2rem, 8vw, 5.5rem);
-            font-weight: 900;
-            letter-spacing: 0.02em;
-            background: linear-gradient(180deg, #ffffff 20%, #888888 50%, #444444 80%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: titleShimmer 5s ease-in-out infinite, titleGlow 4s ease-in-out infinite;
+            font-family: 'UnifrakturCook', 'Cinzel', serif;
+            font-size: clamp(3.5rem, 8vw, 6rem);
+            font-weight: 700;
+            color: #d4c5a0;
+            text-shadow: 0 0 30px rgba(201,168,108,0.3), 0 0 60px rgba(201,168,108,0.1);
+            letter-spacing: 0.05em;
+            animation: titleGlow 5s ease-in-out infinite;
             position: relative;
             display: inline-block;
-            text-shadow: 0 0 80px rgba(255,255,255,0.2);
-        }
-
-        @keyframes titleShimmer {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
         }
 
         @keyframes titleGlow {
-            0%, 100% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.15)); }
-            50% { filter: drop-shadow(0 0 35px rgba(255,255,255,0.4)); }
+            0%, 100% { text-shadow: 0 0 20px rgba(201,168,108,0.3), 0 0 40px rgba(201,168,108,0.1); }
+            50% { text-shadow: 0 0 40px rgba(201,168,108,0.6), 0 0 80px rgba(201,168,108,0.3); }
         }
 
-        .hero h1::before {
-            content: '✦';
-            position: absolute;
-            left: -50px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 2rem;
-            color: #fff;
-            -webkit-text-fill-color: #fff;
-            animation: starLeft 3s ease-in-out infinite;
-        }
-
+        .hero h1::before,
         .hero h1::after {
-            content: '✦';
+            content: '⚜';
             position: absolute;
-            right: -50px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 2rem;
-            color: #fff;
-            -webkit-text-fill-color: #fff;
-            animation: starRight 3s ease-in-out infinite;
+            color: #c9a86c;
+            text-shadow: 0 0 15px rgba(201,168,108,0.5);
+            animation: ornamentSway 3s ease-in-out infinite;
         }
 
-        @keyframes starLeft {
+        .hero h1::before { left: -70px; }
+        .hero h1::after { right: -70px; }
+
+        @keyframes ornamentSway {
             0%, 100% { transform: translateY(-50%) rotate(0deg); }
-            50% { transform: translateY(-50%) rotate(180deg); }
+            50% { transform: translateY(-50%) rotate(10deg); }
         }
 
-        @keyframes starRight {
-            0%, 100% { transform: translateY(-50%) rotate(0deg); }
-            50% { transform: translateY(-50%) rotate(-180deg); }
-        }
-
-        /* ===== КАРТОЧКИ ===== */
+        /* ===== КАРТОЧКИ ПРАВИЛ ===== */
         .rule-card {
-            background: var(--card);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 2.2rem 2.4rem;
-            margin-bottom: 2.2rem;
+            padding: 2.5rem 2.8rem;
+            margin-bottom: 3rem;
             box-shadow: var(--shadow-soft);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
             opacity: 0;
-            transform: translateY(50px);
+            transform: translateY(40px);
             will-change: transform, opacity, box-shadow, border-color;
             isolation: isolate;
         }
@@ -232,31 +245,31 @@
         .rule-card.visible {
             opacity: 1;
             transform: translateY(0);
-            transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, border-color 0.5s ease;
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, border-color 0.5s ease;
         }
 
         .rule-card:hover {
-            border-color: var(--border-light);
-            box-shadow: var(--shadow-deep), var(--glow-white);
-            transform: translateY(-6px);
+            border-color: #5a4a2a;
+            box-shadow: var(--shadow-deep), var(--glow-gold);
+            transform: translateY(-8px);
         }
 
-        /* Свечение при наведении */
+        /* Светящаяся граница */
         .rule-card::before {
             content: '';
             position: absolute;
             inset: -2px;
             border-radius: calc(var(--radius) + 2px);
-            background: linear-gradient(135deg, #ffffff, #555555, #ffffff, #333333);
+            background: linear-gradient(135deg, #c9a86c, #6b5a3a, #c9a86c, #3a2e1a);
             background-size: 400% 400%;
             z-index: -2;
             opacity: 0;
             transition: opacity 0.6s ease;
-            animation: borderFlow 5s linear infinite;
+            animation: borderFlow 6s linear infinite;
         }
 
         .rule-card:hover::before {
-            opacity: 0.25;
+            opacity: 0.35;
         }
 
         @keyframes borderFlow {
@@ -274,56 +287,55 @@
             z-index: -1;
             opacity: 0;
             transition: opacity 0.6s ease;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
         }
 
         .rule-card:hover::after {
             opacity: 1;
         }
 
-        /* Номер правила */
+        /* Номер правила (готические цифры) */
         .rule-number {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 3.2rem;
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
             font-weight: 700;
-            color: #fff;
+            color: #c9a86c;
             line-height: 1;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.6rem;
             display: inline-block;
-            text-shadow: 0 0 20px rgba(255,255,255,0.4);
-            animation: numberPulse 4s ease-in-out infinite;
-            letter-spacing: -0.05em;
+            text-shadow: 0 0 20px rgba(201,168,108,0.5);
+            animation: numberGlow 4s ease-in-out infinite;
+            letter-spacing: 0.05em;
         }
 
-        @keyframes numberPulse {
-            0%, 100% { text-shadow: 0 0 15px rgba(255,255,255,0.3); }
-            50% { text-shadow: 0 0 35px rgba(255,255,255,0.7); }
+        @keyframes numberGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(201,168,108,0.3); }
+            50% { text-shadow: 0 0 30px rgba(201,168,108,0.8); }
         }
 
         .rule-title {
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: #fff;
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #e0d5b0;
             margin-bottom: 1.2rem;
             position: relative;
             display: inline-block;
             transition: var(--transition);
-            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
         .rule-title::after {
             content: '';
             position: absolute;
             left: 0;
-            bottom: -6px;
+            bottom: -8px;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #fff, #888);
-            border-radius: 2px;
+            background: linear-gradient(90deg, #c9a86c, #8a7a5a);
             transition: width 0.5s ease;
-            box-shadow: 0 0 12px rgba(255,255,255,0.5);
+            box-shadow: 0 0 12px rgba(201,168,108,0.6);
         }
 
         .rule-card:hover .rule-title::after {
@@ -331,43 +343,57 @@
         }
 
         .rule-card:hover .rule-title {
-            text-shadow: 0 0 30px rgba(255,255,255,0.4);
+            text-shadow: 0 0 35px rgba(201,168,108,0.5);
         }
 
         /* Контент */
         .rule-content {
             color: var(--text-2);
             line-height: 1.75;
-            font-size: 0.98rem;
-            margin-top: 0.5rem;
+            font-size: 1.05rem;
+            margin-top: 0.8rem;
         }
 
         .rule-content p {
             margin-bottom: 0.7rem;
             position: relative;
-            padding-left: 0.5rem;
-            transition: color 0.3s ease;
+            padding-left: 1.2rem;
+            transition: color 0.4s ease;
+        }
+
+        .rule-content p::before {
+            content: '❖';
+            position: absolute;
+            left: 0;
+            color: #6b5a3a;
+            font-size: 0.9rem;
+            transition: color 0.4s ease;
         }
 
         .rule-card:hover .rule-content p {
             color: var(--text-1);
         }
+        .rule-card:hover .rule-content p::before {
+            color: #c9a86c;
+        }
 
         /* Наказание */
         .punishment {
             display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.55rem 1.8rem;
-            background: rgba(255,255,255,0.04);
-            border-left: 3px solid #fff;
-            border-radius: 0 12px 12px 0;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #fff;
-            letter-spacing: 0.04em;
+            margin-top: 1.8rem;
+            padding: 0.6rem 2rem;
+            background: rgba(0,0,0,0.4);
+            border-left: 3px solid #c9a86c;
+            border-radius: 0 8px 8px 0;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+            color: #f0e6c8;
             transition: var(--transition);
             position: relative;
             overflow: hidden;
+            text-transform: uppercase;
         }
 
         .punishment::before {
@@ -377,26 +403,26 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            background: linear-gradient(90deg, transparent, rgba(201,168,108,0.2), transparent);
             transition: left 0.8s ease;
         }
 
         .rule-card:hover .punishment {
-            background: rgba(255,255,255,0.08);
-            box-shadow: 0 0 25px rgba(255,255,255,0.2);
-            border-left-color: #fff;
+            background: rgba(20,15,5,0.7);
+            box-shadow: 0 0 25px rgba(201,168,108,0.3);
+            border-left-color: #ffd700;
         }
 
         .rule-card:hover .punishment::before {
             left: 100%;
         }
 
-        /* Декоративные углы */
+        /* Декоративные углы (готический орнамент) */
         .rule-card .corner-decor {
             position: absolute;
-            width: 24px;
-            height: 24px;
-            border: 1px solid var(--border-light);
+            width: 30px;
+            height: 30px;
+            border: 2px solid #3a3a3a;
             opacity: 0;
             transition: all 0.5s ease;
             pointer-events: none;
@@ -404,83 +430,82 @@
         }
 
         .rule-card .corner-decor.top-left {
-            top: 8px;
-            left: 8px;
+            top: 10px;
+            left: 10px;
             border-right: none;
             border-bottom: none;
-            border-radius: 6px 0 0 0;
+            border-radius: 4px 0 0 0;
         }
-
         .rule-card .corner-decor.top-right {
-            top: 8px;
-            right: 8px;
+            top: 10px;
+            right: 10px;
             border-left: none;
             border-bottom: none;
-            border-radius: 0 6px 0 0;
+            border-radius: 0 4px 0 0;
         }
-
         .rule-card .corner-decor.bottom-left {
-            bottom: 8px;
-            left: 8px;
+            bottom: 10px;
+            left: 10px;
             border-right: none;
             border-top: none;
-            border-radius: 0 0 0 6px;
+            border-radius: 0 0 0 4px;
         }
-
         .rule-card .corner-decor.bottom-right {
-            bottom: 8px;
-            right: 8px;
+            bottom: 10px;
+            right: 10px;
             border-left: none;
             border-top: none;
-            border-radius: 0 0 6px 0;
+            border-radius: 0 0 4px 0;
         }
 
         .rule-card:hover .corner-decor {
             opacity: 1;
-            border-color: #555;
+            border-color: #c9a86c;
         }
 
-        /* Микро-деталь: номер в фоне */
+        /* Большой номер в фоне */
         .rule-card .bg-number {
             position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 8rem;
-            font-weight: 700;
+            right: 15px;
+            bottom: -10px;
+            font-family: 'UnifrakturCook', serif;
+            font-size: 9rem;
             color: rgba(255,255,255,0.03);
             pointer-events: none;
             z-index: 0;
             transition: color 0.4s ease;
             user-select: none;
+            line-height: 1;
         }
 
         .rule-card:hover .bg-number {
-            color: rgba(255,255,255,0.06);
+            color: rgba(201,168,108,0.08);
         }
 
         /* ===== АДАПТИВНОСТЬ ===== */
         @media (max-width: 600px) {
             .rule-card {
-                padding: 1.5rem 1.2rem;
+                padding: 1.8rem 1.5rem;
             }
             .rule-title {
                 font-size: 1.6rem;
             }
             .rule-number {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
             }
             .hero h1 {
-                font-size: 2.8rem;
+                font-size: 2.5rem;
             }
             .hero h1::before,
             .hero h1::after {
                 display: none;
             }
             .rule-card .bg-number {
-                font-size: 5rem;
-                right: 10px;
+                font-size: 6rem;
+                right: 5px;
+            }
+            .candle {
+                display: none;
             }
         }
     </style>
@@ -488,9 +513,25 @@
 <body>
 
     <!-- Фоновые слои -->
-    <div class="bg-grid"></div>
-    <div class="bg-vignette"></div>
-    <div class="dust-particles" id="dust"></div>
+    <div class="bg-gothic">
+        <div class="web web-1"></div>
+        <div class="web web-2"></div>
+        <div class="web web-3"></div>
+        <div class="vignette"></div>
+        <div id="dustContainer"></div>
+    </div>
+
+    <!-- Свечи -->
+    <div class="candle candle-left">
+        <div class="candle-body"></div>
+        <div class="candle-wick"></div>
+        <div class="candle-flame"></div>
+    </div>
+    <div class="candle candle-right">
+        <div class="candle-body"></div>
+        <div class="candle-wick"></div>
+        <div class="candle-flame"></div>
+    </div>
 
     <!-- Основной контент -->
     <main class="main-wrapper">
@@ -505,7 +546,7 @@
         // ========== ДАННЫЕ ПРАВИЛ ==========
         const rules = [
             {
-                number: "01",
+                number: "I",
                 title: "Конфликты",
                 content: `
                     <p>Любые ссоры, ругань, срач, конфликты и т.д. — запрещены. Разбирательства проводим в личные сообщения, но никак не во флуде. Флуд создан для комфортного общения.</p>
@@ -515,7 +556,7 @@
                 punishment: "Кара: пред / мут / варн / удаление"
             },
             {
-                number: "02",
+                number: "II",
                 title: "Оскорбления",
                 content: `
                     <p>Оскорбления запрещены так же, как и конфликты. Переход на личности, осуждение человека и всего, что с ним связано, — наказуемо.</p>
@@ -523,7 +564,7 @@
                 punishment: "Кара: пред / мут"
             },
             {
-                number: "03",
+                number: "III",
                 title: "Табу-темы",
                 content: `
                     <p>Запрещается обсуждение политики, порнографии, шок-контента и т.д. Во флуде участники разного возраста, стрессоустойчивости и нервов. Если не жалеете себя, то пожалейте хотя бы их — мы все люди и все разные.</p>
@@ -532,7 +573,7 @@
                 punishment: "Кара: мут / варн / удаление"
             },
             {
-                number: "04",
+                number: "IV",
                 title: "Спам",
                 content: `
                     <p>Запрещено присылать более 3 одинаковых сообщений / gif / стикеров / фотографий — это уже спам. Давайте будем держать флуд в чистоте и не засорять его мусором.</p>
@@ -540,7 +581,7 @@
                 punishment: "Кара: мут + пред"
             },
             {
-                number: "05",
+                number: "V",
                 title: "Ролевая",
                 content: `
                     <p>Ролить во флуде запрещено! Только если это пример поста (показать, как пишет человек, сколько, в каком стиле). Посты пишите хотя бы в две строчки, потому что посты типа «сел», «встал», «поел» тяжело продолжить.</p>
@@ -550,7 +591,7 @@
                 punishment: "Кара: по решению администрации"
             },
             {
-                number: "06",
+                number: "VI",
                 title: "Чистка × Норма",
                 content: `
                     <p>Чистка будет проводиться в воскресенье, в 16:00 по МСК, время может меняться в зависимости от занятости админов.</p>
@@ -559,7 +600,7 @@
                 punishment: "Кара: по решению администрации"
             },
             {
-                number: "07",
+                number: "VII",
                 title: "Рест",
                 content: `
                     <p>Рест можно брать от 2 дней до 3 недель, в зависимости от ситуации. При желании взять рест пишите админам либо прямо во флуде, отмечая администрацию.</p>
@@ -567,7 +608,7 @@
                 punishment: "—"
             },
             {
-                number: "08",
+                number: "VIII",
                 title: "Жалобы",
                 content: `
                     <p>Жаловаться можно на участников и на администрацию, прикладывая веские доказательства (скрины и т.д.). При получении 3 жалоб — вылет.</p>
@@ -575,7 +616,7 @@
                 punishment: "Кара: вылет"
             },
             {
-                number: "09",
+                number: "IX",
                 title: "Роли",
                 content: `
                     <p>Роли можно бронировать не больше 3 дней. По истечении срока ваша роль отдаётся другому, если найдётся на неё человек.</p>
@@ -584,7 +625,7 @@
                 punishment: "—"
             },
             {
-                number: "10",
+                number: "X",
                 title: "Реклама",
                 content: `
                     <p>Реклама своих флудов, проектов, КФ, ролок, ботов и т.д. запрещена. По договорённости с администрацией можно будет прорекламировать то, что вы хотели.</p>
@@ -599,7 +640,7 @@
         rules.forEach((rule, index) => {
             const card = document.createElement('article');
             card.className = 'rule-card';
-            card.style.transitionDelay = `${index * 0.06}s`;
+            card.style.transitionDelay = `${index * 0.07}s`;
 
             const corners = `
                 <div class="corner-decor top-left"></div>
@@ -611,7 +652,7 @@
             card.innerHTML = `
                 ${corners}
                 <div class="bg-number">${rule.number}</div>
-                <div class="rule-number">№ ${rule.number}</div>
+                <div class="rule-number">${rule.number}</div>
                 <h2 class="rule-title">${rule.title}</h2>
                 <div class="rule-content">${rule.content}</div>
                 <div class="punishment">${rule.punishment}</div>
@@ -636,56 +677,32 @@
 
         cards.forEach(card => observer.observe(card));
 
-        // ========== ПЫЛЕВЫЕ ЧАСТИЦЫ ==========
-        const dustContainer = document.getElementById('dust');
-        const dustCount = 45;
+        // ========== ПЫЛЬ ==========
+        const dustContainer = document.getElementById('dustContainer');
+        const dustCount = 50;
 
         for (let i = 0; i < dustCount; i++) {
             const dust = document.createElement('div');
             dust.classList.add('dust');
-
-            const size = Math.random() * 3 + 1; // 1-4px
+            const size = Math.random() * 2.5 + 1;
             const left = Math.random() * 100;
             const delay = Math.random() * 20;
-            const duration = Math.random() * 15 + 10; // 10-25s
-            const opacityMax = Math.random() * 0.5 + 0.3;
-
+            const duration = Math.random() * 15 + 10;
             dust.style.width = `${size}px`;
             dust.style.height = `${size}px`;
             dust.style.left = `${left}%`;
             dust.style.animationDelay = `${delay}s`;
             dust.style.animationDuration = `${duration}s`;
-            dust.style.setProperty('--opacity-max', opacityMax);
-
             dustContainer.appendChild(dust);
         }
 
-        // Переопределяем keyframes для пыли с учётом opacity
-        const dustStyle = document.createElement('style');
-        dustStyle.textContent = `
-            @keyframes dustFloat {
-                0% { 
-                    transform: translateY(0) translateX(0); 
-                    opacity: 0; 
-                }
-                10% { opacity: var(--opacity-max, 0.5); }
-                90% { opacity: calc(var(--opacity-max, 0.5) * 0.7); }
-                100% { 
-                    transform: translateY(-110vh) translateX(80px); 
-                    opacity: 0; 
-                }
-            }
-        `;
-        document.head.appendChild(dustStyle);
-
-        // ========== ПАРАЛЛАКС ФОНА ==========
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            const grid = document.querySelector('.bg-grid');
-            const vignette = document.querySelector('.bg-vignette');
-            if (grid) grid.style.transform = `translateY(${scrollY * 0.1}px)`;
-            if (vignette) vignette.style.transform = `translateY(${scrollY * -0.05}px)`;
-        });
+        // ========== МЕРЦАНИЕ СВЕЧЕЙ (небольшая случайность) ==========
+        setInterval(() => {
+            const flames = document.querySelectorAll('.candle-flame');
+            flames.forEach(flame => {
+                flame.style.animationDuration = (0.1 + Math.random() * 0.2) + 's';
+            });
+        }, 500);
     </script>
 </body>
 </html>

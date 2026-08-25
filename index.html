@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Правила флуда</title>
+    <title>Правила флуда · Аниме стиль</title>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ========== ОСНОВНЫЕ ПЕРЕМЕННЫЕ ========== */
         :root {
-            --bg: #ffffff;
-            --text: #111111;
-            --text-secondary: #444444;
-            --border: #dddddd;
-            --card-bg: #fafafa;
-            --accent: #000000;
-            --hover-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-            --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --radius: 12px;
-            --font-heading: 'Georgia', 'Times New Roman', serif;
-            --font-body: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            --pink: #ff7eb3;
+            --pink-light: #ffb6d5;
+            --purple: #a855f7;
+            --blue: #7dd3fc;
+            --gold: #fbbf24;
+            --bg-start: #1a1a2e;
+            --bg-end: #16213e;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.2);
+            --text: #ffffff;
+            --text-secondary: #e0e0e0;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --glow: 0 0 20px rgba(255, 126, 179, 0.5);
+            --radius: 20px;
+            --transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* ========== СБРОС ========== */
         * {
             margin: 0;
             padding: 0;
@@ -28,136 +31,125 @@
         }
 
         body {
-            background-color: var(--bg);
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            font-family: 'Poppins', sans-serif;
             color: var(--text);
-            font-family: var(--font-body);
-            line-height: 1.6;
             overflow-x: hidden;
-            /* Лёгкая анимация фона в оттенках серого */
-            background-image: radial-gradient(circle at 20% 30%, #f0f0f0 0%, transparent 25%),
-                              radial-gradient(circle at 80% 70%, #e0e0e0 0%, transparent 20%);
-            background-attachment: fixed;
-            animation: bgShift 12s ease-in-out infinite alternate;
+            position: relative;
+            animation: bgShift 15s ease-in-out infinite alternate;
         }
 
         @keyframes bgShift {
-            0% { background-position: 0% 0%, 100% 100%; }
-            100% { background-position: 100% 100%, 0% 0%; }
+            0% { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+            50% { background: linear-gradient(135deg, #2d1b3d, #1a1a2e); }
+            100% { background: linear-gradient(135deg, #1a1a2e, #0f3460); }
         }
 
-        /* ========== ШАПКА ========== */
-        header {
-            text-align: center;
-            padding: 4rem 1rem 2rem;
-            position: relative;
-            overflow: hidden;
-            border-bottom: 2px solid var(--border);
-            animation: fadeInDown 1s ease-out both;
-        }
-
-        header h1 {
-            font-family: var(--font-heading);
-            font-size: clamp(2.2rem, 6vw, 4rem);
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        header h1::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            height: 3px;
-            background: var(--accent);
-            border-radius: 3px;
-            animation: underlinePulse 2s ease-in-out infinite;
-        }
-
-        @keyframes underlinePulse {
-            0%, 100% { width: 40%; opacity: 0.7; }
-            50% { width: 80%; opacity: 1; }
-        }
-
-        header p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            margin-top: 1.2rem;
-        }
-
-        /* ========== НАВИГАЦИЯ ========== */
-        nav {
-            position: sticky;
+        /* Слой с сакурой */
+        .sakura-container {
+            position: fixed;
             top: 0;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--border);
-            padding: 0.6rem 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            animation: fadeInDown 0.8s ease-out 0.3s both;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
         }
 
-        nav a {
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.9rem;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            border: 1px solid transparent;
-            transition: var(--transition);
-            white-space: nowrap;
+        .petal {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #ffb7c5;
+            border-radius: 50% 0 50% 50%;
+            opacity: 0.7;
+            animation: fall linear infinite;
+            box-shadow: 0 0 10px rgba(255, 183, 197, 0.5);
         }
 
-        nav a:hover {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-            transform: translateY(-2px);
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg) translateX(0);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg) translateX(200px);
+                opacity: 0.2;
+            }
         }
 
-        /* ========== КОНТЕЙНЕР КАРТОЧЕК ========== */
-        .container {
+        /* Главный контейнер */
+        .main-wrapper {
+            position: relative;
+            z-index: 2;
             max-width: 900px;
-            margin: 2rem auto 4rem;
-            padding: 0 1.5rem;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
         }
 
+        /* Заголовок */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: floatIn 1.2s ease-out both;
+        }
+
+        .hero h1 {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 3s ease-in-out infinite;
+            letter-spacing: 0.03em;
+            text-shadow: 0 0 30px rgba(255, 126, 179, 0.3);
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 126, 179, 0.4)); }
+            50% { filter: drop-shadow(0 0 25px rgba(168, 85, 247, 0.7)); }
+        }
+
+        @keyframes floatIn {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Карточки */
         .rule-card {
             background: var(--card-bg);
-            border: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
             border-radius: var(--radius);
             padding: 1.8rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            box-shadow: var(--shadow);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
             opacity: 0;
-            transform: translateY(30px);
-            /* Анимация при появлении будет через JS */
+            transform: translateY(50px);
+            will-change: transform, opacity, box-shadow;
         }
 
         .rule-card.visible {
             opacity: 1;
             transform: translateY(0);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease, border-color 0.3s ease;
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out, box-shadow 0.4s ease, border-color 0.4s ease;
         }
 
         .rule-card:hover {
-            box-shadow: var(--hover-shadow);
-            border-color: #bbb;
-            transform: translateY(-5px);
+            border-color: rgba(255, 126, 179, 0.7);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), var(--glow);
+            transform: translateY(-8px) scale(1.02);
         }
 
-        /* Анимированная градиентная рамка при наведении */
+        /* Градиентная неоновая рамка при наведении */
         .rule-card::before {
             content: '';
             position: absolute;
@@ -165,20 +157,20 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
-            background: linear-gradient(45deg, #ccc, #888, #ccc);
-            z-index: -1;
             border-radius: calc(var(--radius) + 2px);
+            background: linear-gradient(45deg, var(--pink), var(--purple), var(--blue), var(--pink));
+            background-size: 400% 400%;
+            z-index: -1;
             opacity: 0;
-            transition: opacity 0.4s ease;
-            animation: borderRotate 3s linear infinite;
-            background-size: 300% 300%;
+            transition: opacity 0.5s ease;
+            animation: borderFlow 3s linear infinite;
         }
 
         .rule-card:hover::before {
-            opacity: 0.4;
+            opacity: 0.6;
         }
 
-        @keyframes borderRotate {
+        @keyframes borderFlow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
@@ -186,83 +178,73 @@
 
         /* Номер правила */
         .rule-number {
-            font-family: var(--font-heading);
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #ccc;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
             line-height: 1;
             margin-bottom: 0.5rem;
-            transition: color 0.3s ease;
             display: inline-block;
+            filter: drop-shadow(0 0 8px rgba(255, 126, 179, 0.4));
+            animation: numberPulse 3s ease-in-out infinite;
         }
 
-        .rule-card:hover .rule-number {
-            color: var(--accent);
+        @keyframes numberPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .rule-title {
-            font-family: var(--font-heading);
-            font-size: 1.8rem;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.9rem;
+            font-weight: 700;
             margin-bottom: 1rem;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
             position: relative;
             display: inline-block;
+            transition: var(--transition);
         }
 
-        .rule-title::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -4px;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.4s ease;
+        .rule-card:hover .rule-title {
+            text-shadow: 0 0 20px rgba(255, 126, 179, 0.8);
         }
 
-        .rule-card:hover .rule-title::after {
-            width: 100%;
-        }
-
+        /* Контент правила */
         .rule-content {
             color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1rem;
         }
 
         .rule-content p {
             margin-bottom: 0.8rem;
         }
 
+        /* Наказание */
         .punishment {
             display: inline-block;
-            margin-top: 1rem;
-            padding: 0.4rem 1rem;
-            background: #f0f0f0;
-            border-left: 4px solid var(--accent);
+            margin-top: 1.2rem;
+            padding: 0.5rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--pink);
+            border-radius: 0 12px 12px 0;
             font-weight: 600;
-            font-size: 0.95rem;
-            border-radius: 0 8px 8px 0;
+            color: #fff;
+            backdrop-filter: blur(5px);
             transition: var(--transition);
+            letter-spacing: 0.02em;
         }
 
         .rule-card:hover .punishment {
-            background: #e0e0e0;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(255, 126, 179, 0.3);
         }
 
-        /* ========== АНИМАЦИИ ПОЯВЛЕНИЯ ========== */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ========== ФУТЕР ========== */
-        footer {
-            text-align: center;
-            padding: 2rem 1rem;
-            border-top: 1px solid var(--border);
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        /* ========== АДАПТИВНОСТЬ ========== */
+        /* Адаптивность */
         @media (max-width: 600px) {
             .rule-card {
                 padding: 1.2rem 1.2rem;
@@ -270,43 +252,28 @@
             .rule-title {
                 font-size: 1.5rem;
             }
-            nav {
-                gap: 0.3rem;
-                padding: 0.4rem 0.5rem;
-            }
-            nav a {
-                font-size: 0.8rem;
-                padding: 0.3rem 0.6rem;
+            .rule-number {
+                font-size: 2.2rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ШАПКА -->
-    <header>
-        <h1>Правила флуда</h1>
-        <p>Соблюдайте, чтобы всем было комфортно</p>
-    </header>
+    <!-- Сакура -->
+    <div class="sakura-container" id="sakura"></div>
 
-    <!-- НАВИГАЦИЯ -->
-    <nav id="navbar">
-        <!-- Ссылки будут добавлены через JS -->
-    </nav>
+    <!-- Контент -->
+    <main class="main-wrapper">
+        <div class="hero">
+            <h1>✦ Правила флуда ✦</h1>
+        </div>
 
-    <!-- ОСНОВНОЙ КОНТЕНТ -->
-    <main class="container" id="rules-container">
-        <!-- Карточки правил будут добавлены через JS -->
+        <div id="rules-container"></div>
     </main>
-
-    <!-- ФУТЕР -->
-    <footer>
-        <p>© 2025 · Флуд-сообщество · Будьте вежливы</p>
-    </footer>
 
     <script>
         // ========== ДАННЫЕ ПРАВИЛ ==========
-        // (звёзды и лишние разделители проигнорированы, только текст)
         const rules = [
             {
                 number: "01",
@@ -397,26 +364,13 @@
             }
         ];
 
-        // ========== ГЕНЕРАЦИЯ НАВИГАЦИИ ==========
-        const navbar = document.getElementById('navbar');
-        const fragment = document.createDocumentFragment();
-
-        rules.forEach(rule => {
-            const link = document.createElement('a');
-            link.href = `#rule-${rule.number}`;
-            link.textContent = rule.title;
-            fragment.appendChild(link);
-        });
-        navbar.appendChild(fragment);
-
         // ========== ГЕНЕРАЦИЯ КАРТОЧЕК ==========
         const container = document.getElementById('rules-container');
 
         rules.forEach((rule, index) => {
             const card = document.createElement('article');
             card.className = 'rule-card';
-            card.id = `rule-${rule.number}`;
-            card.style.transitionDelay = `${index * 0.05}s`; // лёгкая задержка для каскада
+            card.style.transitionDelay = `${index * 0.03}s`; // для каскада
 
             card.innerHTML = `
                 <div class="rule-number">${rule.number}</div>
@@ -435,33 +389,63 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // После появления можно перестать наблюдать, чтобы не грузить
                     observer.unobserve(entry.target);
                 }
             });
         }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -40px 0px'
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
         });
 
         cards.forEach(card => observer.observe(card));
 
-        // ========== ПЛАВНЫЙ СКРОЛЛ ДЛЯ ЯКОРЕЙ ==========
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    // Небольшое смещение для липкой навигации
-                    window.scrollBy(0, -70);
+        // ========== ГЕНЕРАЦИЯ САКУРЫ ==========
+        const sakuraContainer = document.getElementById('sakura');
+        const petalCount = 25;
+
+        for (let i = 0; i < petalCount; i++) {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            // случайные параметры
+            const size = Math.random() * 10 + 8; // 8-18px
+            const left = Math.random() * 100;
+            const delay = Math.random() * 15;
+            const duration = Math.random() * 10 + 8; // 8-18s
+            const opacity = Math.random() * 0.5 + 0.3;
+            const rotation = Math.random() * 360;
+            const drift = Math.random() * 300 - 150;
+
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size}px`;
+            petal.style.left = `${left}%`;
+            petal.style.animationDelay = `${delay}s`;
+            petal.style.animationDuration = `${duration}s`;
+            petal.style.opacity = opacity;
+            petal.style.transform = `rotate(${rotation}deg)`;
+            petal.style.setProperty('--drift', `${drift}px`);
+
+            // переопределяем keyframes для каждой с учётом drift
+            petal.style.animationName = 'fall';
+            petal.style.animationTimingFunction = 'linear';
+            petal.style.animationIterationCount = 'infinite';
+            sakuraContainer.appendChild(petal);
+        }
+
+        // Добавляем немного случайного движения по горизонтали
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                0% {
+                    transform: translateY(-10vh) rotate(0deg) translateX(0);
+                    opacity: 0.9;
                 }
-            });
-        });
+                100% {
+                    transform: translateY(110vh) rotate(720deg) translateX(var(--drift, 0px));
+                    opacity: 0.2;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
-  </html>
+</html>

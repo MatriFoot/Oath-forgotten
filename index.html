@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Правила флуда · Аниме стиль</title>
+    <title>Правила флуда · Аниме-стиль</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,16 +12,17 @@
             --purple: #a855f7;
             --blue: #7dd3fc;
             --gold: #fbbf24;
-            --bg-start: #1a1a2e;
-            --bg-end: #16213e;
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --card-border: rgba(255, 255, 255, 0.2);
+            --bg-dark: #0f0a1e;
+            --card-bg: rgba(255, 255, 255, 0.06);
+            --card-border: rgba(255, 255, 255, 0.15);
             --text: #ffffff;
-            --text-secondary: #e0e0e0;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            --glow: 0 0 20px rgba(255, 126, 179, 0.5);
-            --radius: 20px;
-            --transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --text-secondary: #e0d9ff;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            --glow-pink: 0 0 30px rgba(255, 126, 179, 0.6);
+            --glow-purple: 0 0 30px rgba(168, 85, 247, 0.6);
+            --radius: 24px;
+            --transition: 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+            --bounce: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         * {
@@ -32,21 +33,64 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            background: radial-gradient(ellipse at top left, #3b1d5e, transparent 50%),
+                        radial-gradient(ellipse at bottom right, #1a0f2e, transparent 50%),
+                        linear-gradient(135deg, #0f0a1e, #1a0f2e 40%, #0f0a1e);
             font-family: 'Poppins', sans-serif;
             color: var(--text);
             overflow-x: hidden;
             position: relative;
-            animation: bgShift 15s ease-in-out infinite alternate;
+            cursor: default;
+            animation: bgPulse 8s ease-in-out infinite alternate;
         }
 
-        @keyframes bgShift {
-            0% { background: linear-gradient(135deg, #1a1a2e, #16213e); }
-            50% { background: linear-gradient(135deg, #2d1b3d, #1a1a2e); }
-            100% { background: linear-gradient(135deg, #1a1a2e, #0f3460); }
+        @keyframes bgPulse {
+            0% { background: radial-gradient(ellipse at top left, #3b1d5e, transparent 50%), radial-gradient(ellipse at bottom right, #1a0f2e, transparent 50%), linear-gradient(135deg, #0f0a1e, #1a0f2e 40%, #0f0a1e); }
+            50% { background: radial-gradient(ellipse at top left, #4a236e, transparent 50%), radial-gradient(ellipse at bottom right, #261540, transparent 50%), linear-gradient(135deg, #160b24, #261540 40%, #160b24); }
+            100% { background: radial-gradient(ellipse at top left, #3b1d5e, transparent 50%), radial-gradient(ellipse at bottom right, #1a0f2e, transparent 50%), linear-gradient(135deg, #0f0a1e, #1a0f2e 40%, #0f0a1e); }
         }
 
-        /* Слой с сакурой */
+        /* ===== ФОНОВЫЕ ЭЛЕМЕНТЫ ===== */
+        .bg-element {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatAround 20s infinite alternate ease-in-out;
+        }
+
+        .magic-circle {
+            width: 500px;
+            height: 500px;
+            border: 2px solid rgba(255, 126, 179, 0.3);
+            border-radius: 50%;
+            top: -200px;
+            right: -200px;
+            background: radial-gradient(circle, transparent 60%, rgba(255, 126, 179, 0.2) 100%);
+            filter: blur(2px);
+            animation: rotateSlow 30s linear infinite, glowPulse 6s ease-in-out infinite alternate;
+        }
+
+        .magic-circle.second {
+            width: 400px;
+            height: 400px;
+            bottom: -150px;
+            left: -150px;
+            border-color: rgba(168, 85, 247, 0.3);
+            background: radial-gradient(circle, transparent 60%, rgba(168, 85, 247, 0.2) 100%);
+            animation: rotateSlow 40s linear infinite reverse, glowPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes rotateSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes glowPulse {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* Сакура */
         .sakura-container {
             position: fixed;
             top: 0;
@@ -60,114 +104,175 @@
 
         .petal {
             position: absolute;
-            width: 12px;
-            height: 12px;
-            background: #ffb7c5;
+            background: linear-gradient(135deg, #ffd1dc, #ff9eb5);
             border-radius: 50% 0 50% 50%;
             opacity: 0.7;
-            animation: fall linear infinite;
-            box-shadow: 0 0 10px rgba(255, 183, 197, 0.5);
+            box-shadow: 0 0 12px rgba(255, 182, 193, 0.6);
+            animation: petalFall linear infinite;
+            will-change: transform, opacity;
         }
 
-        @keyframes fall {
+        @keyframes petalFall {
             0% {
-                transform: translateY(-10vh) rotate(0deg) translateX(0);
+                transform: translateY(-10vh) rotate(0deg) translateX(0) scale(1);
                 opacity: 0.9;
             }
+            50% {
+                opacity: 0.7;
+            }
             100% {
-                transform: translateY(110vh) rotate(720deg) translateX(200px);
-                opacity: 0.2;
+                transform: translateY(110vh) rotate(720deg) translateX(var(--drift, 0px)) scale(0.8);
+                opacity: 0.1;
             }
         }
 
-        /* Главный контейнер */
+        /* Искры */
+        .spark {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            filter: drop-shadow(0 0 6px #fff);
+            animation: sparkFloat 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes sparkFloat {
+            0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.2; }
+            50% { transform: translateY(-30vh) translateX(20px) scale(1.5); opacity: 0.8; }
+            100% { transform: translateY(10vh) translateX(-30px) scale(0.8); opacity: 0.4; }
+        }
+
+        /* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
         .main-wrapper {
             position: relative;
             z-index: 2;
             max-width: 900px;
             margin: 0 auto;
-            padding: 3rem 1.5rem 4rem;
+            padding: 4rem 1.5rem 5rem;
         }
 
         /* Заголовок */
         .hero {
             text-align: center;
-            margin-bottom: 3rem;
-            animation: floatIn 1.2s ease-out both;
+            margin-bottom: 4rem;
+            animation: heroEntrance 1.5s ease-out both;
+        }
+
+        @keyframes heroEntrance {
+            0% { opacity: 0; transform: scale(0.8) translateY(-50px); filter: blur(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
         }
 
         .hero h1 {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            font-size: clamp(2.5rem, 7vw, 4rem);
+            font-size: clamp(3rem, 8vw, 5rem);
             font-weight: 900;
-            background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue));
+            background: linear-gradient(135deg, #ff7eb3, #c084fc, #7dd3fc, #ff7eb3);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: titleGlow 3s ease-in-out infinite;
-            letter-spacing: 0.03em;
-            text-shadow: 0 0 30px rgba(255, 126, 179, 0.3);
+            animation: gradientShift 4s ease-in-out infinite, textGlow 3s ease-in-out infinite;
+            letter-spacing: 0.02em;
+            text-shadow: 0 0 40px rgba(255, 126, 179, 0.4);
+            position: relative;
+            display: inline-block;
         }
 
-        @keyframes titleGlow {
-            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 126, 179, 0.4)); }
-            50% { filter: drop-shadow(0 0 25px rgba(168, 85, 247, 0.7)); }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        @keyframes floatIn {
-            from { opacity: 0; transform: translateY(-40px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes textGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 126, 179, 0.5)); }
+            50% { filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.9)); }
         }
 
-        /* Карточки */
+        /* Декоративные линии под заголовком */
+        .hero::after {
+            content: '✦';
+            display: block;
+            font-size: 2rem;
+            color: #ff7eb3;
+            margin-top: 1rem;
+            animation: spinStar 3s linear infinite;
+        }
+
+        @keyframes spinStar {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== КАРТОЧКИ ПРАВИЛ ===== */
         .rule-card {
             background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--card-border);
             border-radius: var(--radius);
-            padding: 1.8rem 2rem;
-            margin-bottom: 2rem;
+            padding: 2rem 2.2rem;
+            margin-bottom: 2.5rem;
             box-shadow: var(--shadow);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
             opacity: 0;
-            transform: translateY(50px);
-            will-change: transform, opacity, box-shadow;
+            transform: translateY(60px) scale(0.95);
+            will-change: transform, opacity, box-shadow, border-color;
+            isolation: isolate;
         }
 
         .rule-card.visible {
             opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.7s ease-out, transform 0.7s ease-out, box-shadow 0.4s ease, border-color 0.4s ease;
+            transform: translateY(0) scale(1);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s ease, border-color 0.5s ease;
         }
 
         .rule-card:hover {
             border-color: rgba(255, 126, 179, 0.7);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), var(--glow);
-            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), var(--glow-pink);
+            transform: translateY(-10px) scale(1.01);
         }
 
-        /* Градиентная неоновая рамка при наведении */
+        /* Градиентная анимированная рамка */
         .rule-card::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: calc(var(--radius) + 2px);
-            background: linear-gradient(45deg, var(--pink), var(--purple), var(--blue), var(--pink));
+            inset: -3px;
+            border-radius: calc(var(--radius) + 3px);
+            background: linear-gradient(45deg, #ff7eb3, #a855f7, #7dd3fc, #ff7eb3);
             background-size: 400% 400%;
-            z-index: -1;
+            z-index: -2;
             opacity: 0;
-            transition: opacity 0.5s ease;
-            animation: borderFlow 3s linear infinite;
+            transition: opacity 0.6s ease;
+            animation: borderFlow 4s linear infinite;
         }
 
         .rule-card:hover::before {
-            opacity: 0.6;
+            opacity: 0.8;
+        }
+
+        /* Внутренний слой для блюра */
+        .rule-card::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: calc(var(--radius) + 3px);
+            background: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .rule-card:hover::after {
+            opacity: 1;
         }
 
         @keyframes borderFlow {
@@ -179,91 +284,187 @@
         /* Номер правила */
         .rule-number {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 900;
-            background: linear-gradient(135deg, var(--pink), var(--purple));
+            background: linear-gradient(135deg, #ff7eb3, #c084fc);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
             line-height: 1;
             margin-bottom: 0.5rem;
             display: inline-block;
-            filter: drop-shadow(0 0 8px rgba(255, 126, 179, 0.4));
-            animation: numberPulse 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(255, 126, 179, 0.5));
+            animation: numberFloat 4s ease-in-out infinite;
         }
 
-        @keyframes numberPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        @keyframes numberFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(1deg); }
         }
 
         .rule-title {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            font-size: 1.9rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             color: #fff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            text-shadow: 0 4px 15px rgba(0,0,0,0.4);
             position: relative;
             display: inline-block;
             transition: var(--transition);
         }
 
-        .rule-card:hover .rule-title {
-            text-shadow: 0 0 20px rgba(255, 126, 179, 0.8);
+        .rule-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff7eb3, #a855f7);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(255, 126, 179, 0.6);
         }
 
-        /* Контент правила */
+        .rule-card:hover .rule-title::after {
+            width: 100%;
+        }
+
+        .rule-card:hover .rule-title {
+            text-shadow: 0 0 30px rgba(255, 126, 179, 0.9);
+        }
+
+        /* Контент */
         .rule-content {
             color: var(--text-secondary);
-            line-height: 1.7;
+            line-height: 1.8;
             font-size: 1rem;
+            margin-top: 0.5rem;
         }
 
         .rule-content p {
             margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 0.5rem;
         }
 
         /* Наказание */
         .punishment {
             display: inline-block;
-            margin-top: 1.2rem;
-            padding: 0.5rem 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-left: 4px solid var(--pink);
-            border-radius: 0 12px 12px 0;
+            margin-top: 1.5rem;
+            padding: 0.6rem 1.8rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-left: 5px solid #ff7eb3;
+            border-radius: 0 16px 16px 0;
             font-weight: 600;
             color: #fff;
             backdrop-filter: blur(5px);
             transition: var(--transition);
             letter-spacing: 0.02em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .punishment::before {
+            content: '';
+            position: absolute;
+            left: -100%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 126, 179, 0.3), transparent);
+            transition: left 0.8s ease;
         }
 
         .rule-card:hover .punishment {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 15px rgba(255, 126, 179, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 25px rgba(255, 126, 179, 0.5);
+            border-left-color: #c084fc;
         }
 
-        /* Адаптивность */
+        .rule-card:hover .punishment::before {
+            left: 100%;
+        }
+
+        /* Декоративные углы */
+        .rule-card .corner-decor {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(255, 126, 179, 0.4);
+            opacity: 0;
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+
+        .rule-card .corner-decor.top-left {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+            border-radius: 8px 0 0 0;
+        }
+
+        .rule-card .corner-decor.top-right {
+            top: 10px;
+            right: 10px;
+            border-left: none;
+            border-bottom: none;
+            border-radius: 0 8px 0 0;
+        }
+
+        .rule-card .corner-decor.bottom-left {
+            bottom: 10px;
+            left: 10px;
+            border-right: none;
+            border-top: none;
+            border-radius: 0 0 0 8px;
+        }
+
+        .rule-card .corner-decor.bottom-right {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
+            border-radius: 0 0 8px 0;
+        }
+
+        .rule-card:hover .corner-decor {
+            opacity: 1;
+            border-color: rgba(255, 126, 179, 0.8);
+        }
+
+        /* ===== АДАПТИВНОСТЬ ===== */
         @media (max-width: 600px) {
             .rule-card {
-                padding: 1.2rem 1.2rem;
+                padding: 1.5rem 1.2rem;
             }
             .rule-title {
-                font-size: 1.5rem;
+                font-size: 1.7rem;
             }
             .rule-number {
-                font-size: 2.2rem;
+                font-size: 2.8rem;
+            }
+            .hero h1 {
+                font-size: 2.8rem;
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- Фоновые магические круги -->
+    <div class="bg-element magic-circle"></div>
+    <div class="bg-element magic-circle second"></div>
+
     <!-- Сакура -->
     <div class="sakura-container" id="sakura"></div>
 
-    <!-- Контент -->
+    <!-- Искры -->
+    <div id="sparks"></div>
+
+    <!-- Основной контент -->
     <main class="main-wrapper">
         <div class="hero">
             <h1>✦ Правила флуда ✦</h1>
@@ -370,9 +571,18 @@
         rules.forEach((rule, index) => {
             const card = document.createElement('article');
             card.className = 'rule-card';
-            card.style.transitionDelay = `${index * 0.03}s`; // для каскада
+            card.style.transitionDelay = `${index * 0.08}s`; // каскадное появление
+
+            // Добавляем декоративные углы
+            const corners = `
+                <div class="corner-decor top-left"></div>
+                <div class="corner-decor top-right"></div>
+                <div class="corner-decor bottom-left"></div>
+                <div class="corner-decor bottom-right"></div>
+            `;
 
             card.innerHTML = `
+                ${corners}
                 <div class="rule-number">${rule.number}</div>
                 <h2 class="rule-title">${rule.title}</h2>
                 <div class="rule-content">${rule.content}</div>
@@ -384,7 +594,6 @@
 
         // ========== НАБЛЮДАТЕЛЬ ЗА ПОЯВЛЕНИЕМ ==========
         const cards = document.querySelectorAll('.rule-card');
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -393,27 +602,26 @@
                 }
             });
         }, {
-            threshold: 0.15,
+            threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         });
 
         cards.forEach(card => observer.observe(card));
 
-        // ========== ГЕНЕРАЦИЯ САКУРЫ ==========
+        // ========== САКУРА ==========
         const sakuraContainer = document.getElementById('sakura');
-        const petalCount = 25;
+        const petalCount = 35;
 
         for (let i = 0; i < petalCount; i++) {
             const petal = document.createElement('div');
             petal.classList.add('petal');
-            // случайные параметры
-            const size = Math.random() * 10 + 8; // 8-18px
+
+            const size = Math.random() * 14 + 10; // 10-24px
             const left = Math.random() * 100;
             const delay = Math.random() * 15;
-            const duration = Math.random() * 10 + 8; // 8-18s
+            const duration = Math.random() * 15 + 10; // 10-25s
             const opacity = Math.random() * 0.5 + 0.3;
-            const rotation = Math.random() * 360;
-            const drift = Math.random() * 300 - 150;
+            const drift = Math.random() * 400 - 200; // -200..200px
 
             petal.style.width = `${size}px`;
             petal.style.height = `${size}px`;
@@ -421,31 +629,44 @@
             petal.style.animationDelay = `${delay}s`;
             petal.style.animationDuration = `${duration}s`;
             petal.style.opacity = opacity;
-            petal.style.transform = `rotate(${rotation}deg)`;
             petal.style.setProperty('--drift', `${drift}px`);
 
-            // переопределяем keyframes для каждой с учётом drift
-            petal.style.animationName = 'fall';
-            petal.style.animationTimingFunction = 'linear';
-            petal.style.animationIterationCount = 'infinite';
             sakuraContainer.appendChild(petal);
         }
 
-        // Добавляем немного случайного движения по горизонтали
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fall {
-                0% {
-                    transform: translateY(-10vh) rotate(0deg) translateX(0);
-                    opacity: 0.9;
-                }
-                100% {
-                    transform: translateY(110vh) rotate(720deg) translateX(var(--drift, 0px));
-                    opacity: 0.2;
-                }
-            }
-        `;
-        document.head.appendChild(style);
+        // ========== ИСКРЫ ==========
+        const sparksContainer = document.getElementById('sparks');
+        const sparkCount = 20;
+
+        for (let i = 0; i < sparkCount; i++) {
+            const spark = document.createElement('div');
+            spark.classList.add('spark');
+
+            const size = Math.random() * 5 + 2; // 2-7px
+            const left = Math.random() * 100;
+            const top = Math.random() * 100;
+            const delay = Math.random() * 10;
+            const duration = Math.random() * 8 + 6;
+
+            spark.style.width = `${size}px`;
+            spark.style.height = `${size}px`;
+            spark.style.left = `${left}%`;
+            spark.style.top = `${top}%`;
+            spark.style.animationDelay = `${delay}s`;
+            spark.style.animationDuration = `${duration}s`;
+
+            sparksContainer.appendChild(spark);
+        }
+
+        // ========== ПАРАЛЛАКС ФОНА ПРИ ПРОКРУТКЕ ==========
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const circles = document.querySelectorAll('.bg-element');
+            circles.forEach((el, idx) => {
+                const speed = idx === 0 ? 0.1 : -0.15;
+                el.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+        });
     </script>
 </body>
 </html>

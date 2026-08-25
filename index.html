@@ -18,6 +18,7 @@
             --text-2: #a0a0a0;
             --text-3: #707070;
             --gold: #c9a86c;
+            --gold-bright: #e6c88a;
             --glow-gold: 0 0 20px rgba(201, 168, 108, 0.4);
             --glow-strong: 0 0 40px rgba(201, 168, 108, 0.7);
             --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.6);
@@ -71,6 +72,7 @@
             background: rgba(255, 255, 255, 0.02);
             transform: scale(1);
             animation: webPulse 8s ease-in-out infinite alternate;
+            will-change: transform, opacity;
         }
 
         .web-1 { width: 500px; height: 500px; top: -200px; left: -200px; border-color: rgba(255,255,255,0.08); }
@@ -92,6 +94,24 @@
             background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.95) 90%);
         }
 
+        /* Туман */
+        .fog {
+            position: absolute;
+            width: 600px;
+            height: 200px;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.06) 0%, transparent 70%);
+            filter: blur(20px);
+            animation: fogMove 25s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        .fog-1 { top: 20%; left: -200px; animation-duration: 30s; }
+        .fog-2 { bottom: 20%; right: -200px; animation-duration: 35s; animation-delay: 5s; }
+
+        @keyframes fogMove {
+            0% { transform: translateX(0) translateY(0); opacity: 0.3; }
+            100% { transform: translateX(200px) translateY(-50px); opacity: 0.6; }
+        }
+
         /* Пыль */
         .dust {
             position: absolute;
@@ -111,7 +131,7 @@
             100% { transform: translateY(-110vh) translateX(60px); opacity: 0; }
         }
 
-        /* Свечи по бокам */
+        /* Свечи */
         .candle {
             position: fixed;
             width: 60px;
@@ -158,6 +178,9 @@
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
             animation: flameFlicker 0.15s ease-in-out infinite alternate;
             filter: blur(1px);
+            transform-origin: bottom center;
+            will-change: transform;
+            box-shadow: 0 0 30px 15px rgba(255,200,100,0.4);
         }
 
         @keyframes flameFlicker {
@@ -196,6 +219,11 @@
             animation: titleGlow 5s ease-in-out infinite;
             position: relative;
             display: inline-block;
+            transition: transform 0.5s ease;
+        }
+
+        .hero h1:hover {
+            transform: scale(1.02);
         }
 
         @keyframes titleGlow {
@@ -237,21 +265,22 @@
             position: relative;
             overflow: hidden;
             opacity: 0;
-            transform: translateY(40px);
+            transform: translateY(40px) rotateX(8deg) scale(0.97);
             will-change: transform, opacity, box-shadow, border-color;
             isolation: isolate;
+            perspective: 1000px;
         }
 
         .rule-card.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) rotateX(0deg) scale(1);
             transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, border-color 0.5s ease;
         }
 
         .rule-card:hover {
             border-color: #5a4a2a;
             box-shadow: var(--shadow-deep), var(--glow-gold);
-            transform: translateY(-8px);
+            transform: translateY(-8px) rotateX(0deg) scale(1);
         }
 
         /* Светящаяся граница */
@@ -295,7 +324,7 @@
             opacity: 1;
         }
 
-        /* Номер правила (готические цифры) */
+        /* Номер правила */
         .rule-number {
             font-family: 'Cinzel', serif;
             font-size: 2.8rem;
@@ -417,7 +446,7 @@
             left: 100%;
         }
 
-        /* Декоративные углы (готический орнамент) */
+        /* Декоративные углы */
         .rule-card .corner-decor {
             position: absolute;
             width: 30px;
@@ -476,10 +505,17 @@
             transition: color 0.4s ease;
             user-select: none;
             line-height: 1;
+            animation: bgNumberGlow 5s ease-in-out infinite;
+        }
+
+        @keyframes bgNumberGlow {
+            0%, 100% { color: rgba(255,255,255,0.03); }
+            50% { color: rgba(255,255,255,0.07); }
         }
 
         .rule-card:hover .bg-number {
-            color: rgba(201,168,108,0.08);
+            color: rgba(201,168,108,0.12);
+            animation: none;
         }
 
         /* ===== АДАПТИВНОСТЬ ===== */
@@ -517,6 +553,8 @@
         <div class="web web-1"></div>
         <div class="web web-2"></div>
         <div class="web web-3"></div>
+        <div class="fog fog-1"></div>
+        <div class="fog fog-2"></div>
         <div class="vignette"></div>
         <div id="dustContainer"></div>
     </div>
@@ -696,13 +734,35 @@
             dustContainer.appendChild(dust);
         }
 
-        // ========== МЕРЦАНИЕ СВЕЧЕЙ (небольшая случайность) ==========
+        // ========== МЕРЦАНИЕ СВЕЧЕЙ ==========
         setInterval(() => {
             const flames = document.querySelectorAll('.candle-flame');
             flames.forEach(flame => {
                 flame.style.animationDuration = (0.1 + Math.random() * 0.2) + 's';
             });
         }, 500);
+
+        // ========== ПАРАЛЛАКС ФОНА ==========
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const webs = document.querySelectorAll('.web');
+            const vignette = document.querySelector('.vignette');
+            const fog = document.querySelectorAll('.fog');
+            
+            webs.forEach((web, idx) => {
+                const speed = idx === 0 ? 0.15 : idx === 1 ? -0.1 : 0.05;
+                web.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+            
+            if (vignette) {
+                vignette.style.transform = `translateY(${scrollY * -0.03}px)`;
+            }
+            
+            fog.forEach((f, idx) => {
+                const speed = idx === 0 ? 0.2 : -0.15;
+                f.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+        });
     </script>
 </body>
-</html>
+    </html>
